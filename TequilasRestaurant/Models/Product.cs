@@ -12,4 +12,4 @@
         public ICollection<OrderItem>? OrderItems { get; set; }
         public ICollection<ProductIngredient>? ProductIngredients { get; set; }
     }
-}
+} 

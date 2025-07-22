@@ -7,3 +7,4 @@ namespace TequilasRestaurant.Models
         public ICollection<Order>? Orders { get; set; }
     }
 }
+ 

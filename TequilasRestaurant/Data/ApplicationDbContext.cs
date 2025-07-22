@@ -81,7 +81,7 @@ namespace TequilasRestaurant.Data
                     Stock = 90,
                     CategoryId = 2,
                 }
-            );
+            ); 
 
             modelBuilder.Entity<ProductIngredient>().HasData(
                 new ProductIngredient { ProductId = 1, IngredientId = 1 },

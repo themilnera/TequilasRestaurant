@@ -6,4 +6,4 @@
         public string Name { get; set; }
         public ICollection<ProductIngredient> ProductIngredients { get; set; }
     }
-}
+} 
