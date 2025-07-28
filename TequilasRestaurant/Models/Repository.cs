@@ -13,14 +13,17 @@ namespace TequilasRestaurant.Models
             _context = context;
             _dbSet = context.Set<T>();
         }
-        public Task AddAsync(T entity)
+        public async Task AddAsync(T entity)
         {
-            throw new NotImplementedException();
+            await _dbSet.AddAsync(entity);
+            await _context.SaveChangesAsync();
         }
 
-        public Task DeleteAsync(int id)
+        public async Task DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            T entity = await _dbSet.FindAsync(id);
+            _dbSet.Remove(entity);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<T>> GetAllAsync()
@@ -48,9 +51,30 @@ namespace TequilasRestaurant.Models
             return await query.FirstOrDefaultAsync(e => EF.Property<int>(e, primaryKeyName) == id);
         }
 
-        public Task UpdateAsync(T entity)
+        public async Task<IEnumerable<T>> GetAllByIdAsync<TKey>(TKey id, string propertyName, QueryOptions<T> options)
         {
-            throw new NotImplementedException();
+            IQueryable<T> query = _dbSet;
+            if (options.HasWhere)
+            {
+                query = query.Where(options.Where);
+            }
+            if (options.HasOrderBy)
+            {
+                query = query.OrderBy(options.OrderBy);
+            }
+            foreach(string include in options.GetIncludes())
+            {
+                query = query.Include(include);
+            }
+            query = query.Where(e => EF.Property<TKey>(e, propertyName).Equals(id));
+
+            return await query.ToListAsync();
+        }
+        
+        public async Task UpdateAsync(T entity)
+        {
+            _context.Update(entity);
+            await _context.SaveChangesAsync();
         }
     }
 }
